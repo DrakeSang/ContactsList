@@ -38,3 +38,12 @@ if($uriParts[0] == "" || count($uriParts) == 1){
 
 $arguments = $uriParts; // if the url is contact/show/6 i keep in array the number 6 which
 // maybe it represents the id of the contact, which i need to show to the user.
+
+$app = new \Core\Application($controllerName, $actionName, $arguments); // creating new
+// instance of the Core class
+
+echo '<pre>';
+print_r($app);
+echo '</pre>';
+
+$app->start(); // calling the start function
