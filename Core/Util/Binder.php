@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: emich
- * Date: 19.3.2019 г.
- * Time: 22:04
- */
 
 namespace Core\Util;
-
 
 class Binder
 {

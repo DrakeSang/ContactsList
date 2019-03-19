@@ -46,4 +46,12 @@ echo '<pre>';
 print_r($app);
 echo '</pre>';
 
-$app->start(); // calling the start function
+$app->addInstance(\Driver\DatabaseInterface::class,
+    new \Driver\PDODatabase('localhost', 'root', '', 'contact_list'));
+
+try {
+    $app->start();
+} catch (ReflectionException $e) {
+} catch (Exception $e) {
+    echo $e->getMessage();
+}

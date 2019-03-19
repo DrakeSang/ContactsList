@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: emich
- * Date: 2.1.2019 г.
- * Time: 20:58
- */
 
 namespace Core\Http;
-
 
 class Request implements RequestInterface
 {

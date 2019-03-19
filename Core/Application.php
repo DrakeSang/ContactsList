@@ -33,6 +33,7 @@ class Application
 
     /**
      * @throws \ReflectionException
+     * @throws \Exception
      */
     public function start()
     {
@@ -54,6 +55,10 @@ class Application
         // Creating the controller path and making the first letter of the controller capital.
         // If i have controller contact from the url it will search in
         // Controllers/ContactController
+
+        if(!is_callable([$controllerFullQualifiedName, $this->actionName])) {
+            throw new \Exception("Action does not exist");
+        }
 
         $controller = new $controllerFullQualifiedName($request); // Making new instance.
         echo '<pre>';
@@ -91,6 +96,8 @@ class Application
 
             $this->params[] = $instance;
         }
+
+        echo $controllerFullQualifiedName;
 
         call_user_func_array(
             [$controller, $this->actionName],
