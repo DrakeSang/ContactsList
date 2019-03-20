@@ -39,4 +39,12 @@ class ContactService implements ContactServiceInterface
 
         return $result;
     }
+
+    public function deleteContact(int $id): bool
+    {
+        $query = "DELETE FROM contacts WHERE contacts.id = ?";
+        $statement = $this->db->prepare($query);
+
+        return $statement->execute([$id]);
+    }
 }

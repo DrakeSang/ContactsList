@@ -11,4 +11,6 @@ interface ContactServiceInterface
                                int $groupId): bool;
 
     public function getAllContacts(): array;
+
+    public function deleteContact(int $id): bool;
 }

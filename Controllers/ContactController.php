@@ -46,13 +46,10 @@ class ContactController
         $allContacts = $contactService->getAllContacts();
 
         $allContactsAsObjects = array();
-        $currentId = 1;
 
         foreach ($allContacts as $contact) {
             $contactObject = new Contact();
 
-            $id = 'id';
-            $contactObject->{$id} = $currentId;
             $contactObject->setName($contact['contactName']);
             $contactObject->setPhone($contact['phone']);
             $contactObject->setNickname($contact['nickname']);
@@ -60,14 +57,17 @@ class ContactController
             $contactObject->setGroup($contact['groupName']);
 
             $allContactsAsObjects[] = $contactObject;
-            $currentId++;
         }
 
         $view->render('contact/showAll', $allContactsAsObjects);
     }
 
-    public function delete(ViewInterface $view)
+    public function delete(int $id,
+                           ContactServiceInterface $contactService)
     {
-        $view->render();
+        if($contactService->deleteContact($id)) {
+            header("Location: /ContactsList/contact/showAll");
+            exit;
+        }
     }
 }
