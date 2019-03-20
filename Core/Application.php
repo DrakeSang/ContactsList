@@ -27,7 +27,9 @@ class Application
     public function __construct($controllerName, $actionName, array $params)
     {
         $this->controllerName = $controllerName;
+
         $this->actionName = $actionName;
+
         $this->params = $params;
     }
 
@@ -39,15 +41,9 @@ class Application
     {
         $request = $this->initiateRequest(); // keeping the request(controller,action and
         // query string)
-        echo '<pre>';
-        print_r($request);
-        echo '</pre>';
         $binder = new Binder(); // making new instance of binder to use it later
         $this->instances[RequestInterface::class] = $request; // putting the created request
         // in instances array
-        echo '<pre>';
-        print_r($this->instances);
-        echo '</pre>';
         $controllerFullQualifiedName =
             'Controllers\\' .
             ucfirst($this->controllerName) .
@@ -61,24 +57,19 @@ class Application
         }
 
         $controller = new $controllerFullQualifiedName($request); // Making new instance.
-        echo '<pre>';
-        print_r($controller);
-        echo '</pre>';
 
         $methodInfo = new \ReflectionMethod($controllerFullQualifiedName, $this->actionName);
-        // I get the method info(the arguments of the function) for teh specific action in
-        // that controller.
-        echo '<pre>';
-        print_r($methodInfo);
-        echo '</pre>';
+        // I get the method info(name and the class).
+
 
         for ($i = count($this->params); $i < count($methodInfo->getParameters()); $i++) {
-            $parameter = $methodInfo->getParameters()[$i]; // getting the first argument of the function
+            $parameter = $methodInfo->getParameters()[$i]; // getting the first argument of
+            // the function
             $paramType = $parameter->getType(); // getting the param type of the argument.
 
-            if(null === $paramType) {
-                continue;
-            }
+//            if(null === $paramType) {
+//                continue;
+//            }
 
             $interfaceName = $paramType->getName(); // getting the name.
             if (!key_exists($interfaceName, $this->mappings) && !key_exists($interfaceName, $this->instances)){
@@ -96,8 +87,6 @@ class Application
 
             $this->params[] = $instance;
         }
-
-        echo $controllerFullQualifiedName;
 
         call_user_func_array(
             [$controller, $this->actionName],
@@ -142,10 +131,6 @@ class Application
 
         $instance = $classInfo->newInstanceArgs($instanceArguments);
         $this->instances[$interfaceName] = $instance;
-
-        echo '<pre>';
-        print_r($instance);
-        echo '</pre>';
 
         return $instance;
     }

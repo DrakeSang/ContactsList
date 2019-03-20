@@ -29,25 +29,30 @@ $uriParts = explode('/', $significantUri); // Splitting the significant url by /
 if($uriParts[0] == "" || count($uriParts) == 1){
     $controllerName = "home";
     $actionName = "index";
+    $arguments = array();
 }else {
     $controllerName = array_shift($uriParts); // deleting the first element of array
-    // adn keep it in another variable
+    // and keep it in another variable
     $actionName = array_shift($uriParts);
-} // checking if user is on the main page or he type himself the url and he only writes the
-// the controller name i set the controller name to be home and action name to be index.
 
-$arguments = $uriParts; // if the url is contact/show/6 i keep in array the number 6 which
-// maybe it represents the id of the contact, which i need to show to the user.
+    $arguments = $uriParts; // if the url is contact/show/6 i keep in array the number 6
+    // which maybe it represents the id of the contact, which i need to show to the user.
+    // checking if user is on the main page or he type himself the url and he only writes the
+    // the controller name i set the controller name to be home and action name to be index.
+}
 
 $app = new \Core\Application($controllerName, $actionName, $arguments); // creating new
 // instance of the Core class
 
-echo '<pre>';
-print_r($app);
-echo '</pre>';
-
 $app->addInstance(\Driver\DatabaseInterface::class,
     new \Driver\PDODatabase('localhost', 'root', '', 'contact_list'));
+
+$app->addMapping(\Core\ViewEngine\ViewInterface::class,
+    \Core\ViewEngine\View::class);
+$app->addMapping(\Core\Services\Contacts\ContactServiceInterface::class,
+    \Core\Services\Contacts\ContactService::class);
+$app->addMapping(\Core\Services\Groups\GroupServiceInterface::class,
+    \Core\Services\Groups\GroupService::class);
 
 try {
     $app->start();
