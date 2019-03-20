@@ -2,6 +2,7 @@
 
 namespace Controllers;
 
+use Core\Http\RequestInterface;
 use Core\Services\Contacts\ContactServiceInterface;
 use Core\Services\Groups\GroupServiceInterface;
 use Core\ViewEngine\ViewInterface;
@@ -69,5 +70,40 @@ class ContactController
             header("Location: /ContactsList/contact/showAll");
             exit;
         }
+    }
+
+    public function groupId()
+    {
+        $groupId = $_POST['groupId'];
+
+        header("Location: /ContactsList/contact/group?groupId=" . $groupId);
+        exit;
+    }
+
+    public function group(RequestInterface $request,
+                          ContactServiceInterface $contactService,
+                          ViewInterface $view)
+    {
+        $queryStringArray = array();
+        parse_str($request->getQueryString(), $queryStringArray);
+
+        $allContactsForSpecificGroup =
+            $contactService->getContactsForSpecificGroup($queryStringArray['groupId']);
+
+        $allContactsAsObjects = array();
+
+        foreach ($allContactsForSpecificGroup as $contact) {
+            $contactObject = new Contact();
+
+            $contactObject->setName($contact['contactName']);
+            $contactObject->setPhone($contact['phone']);
+            $contactObject->setNickname($contact['nickname']);
+            $contactObject->setEmail($contact['email']);
+            $contactObject->setGroup($contact['groupName']);
+
+            $allContactsAsObjects[] = $contactObject;
+        }
+
+        $view->render('group/showAllContacts', $allContactsAsObjects);
     }
 }

@@ -47,4 +47,19 @@ class ContactService implements ContactServiceInterface
 
         return $statement->execute([$id]);
     }
+
+
+    public function getContactsForSpecificGroup(int $id): array
+    {
+        $query = "SELECT c.name as contactName, g.name as groupName, c.phone, c.nickname, c.email
+                  FROM contacts as c
+                  LEFT JOIN groups as g
+                  ON c.groupID = g.id
+                  WHERE g.id = ?";
+        $statement = $this->db->prepare($query);
+        $statement->execute([$id]);
+        $result = $statement->fetch();
+
+        return $result;
+    }
 }

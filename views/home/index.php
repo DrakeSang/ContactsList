@@ -22,7 +22,14 @@ for specific contact.
             </td>
         </tr>
         <tr>
-            <td>See all contacts for specific group</td>
+            <td>
+                <form action="/ContactsList/contact/groupId" method="post">
+                    <label for="groupId">Id of the group</label>
+                    <input type="number" step="1" id="groupId" name="groupId" placeholder="Group Id..">
+
+                    <input type="submit" value="Submit">
+                </form>
+            </td>
         </tr>
     </table>
 </div>
