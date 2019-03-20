@@ -11,7 +11,7 @@ use Models\Contact;
 class ContactController
 {
     public function create(ViewInterface $view,
-                        GroupServiceInterface $groupService)
+                           GroupServiceInterface $groupService)
     {
         $allGroups = $groupService->getAllGroups();
 
@@ -38,6 +38,32 @@ class ContactController
 
         header("Location: /ContactsList/contact/create");
         exit;
+    }
+
+    public function showAll(ViewInterface $view,
+                            ContactServiceInterface $contactService)
+    {
+        $allContacts = $contactService->getAllContacts();
+
+        $allContactsAsObjects = array();
+        $currentId = 1;
+
+        foreach ($allContacts as $contact) {
+            $contactObject = new Contact();
+
+            $id = 'id';
+            $contactObject->{$id} = $currentId;
+            $contactObject->setName($contact['contactName']);
+            $contactObject->setPhone($contact['phone']);
+            $contactObject->setNickname($contact['nickname']);
+            $contactObject->setEmail($contact['email']);
+            $contactObject->setGroup($contact['groupName']);
+
+            $allContactsAsObjects[] = $contactObject;
+            $currentId++;
+        }
+
+        $view->render('contact/showAll', $allContactsAsObjects);
     }
 
     public function delete(ViewInterface $view)

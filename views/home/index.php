@@ -17,7 +17,9 @@ for specific contact.
             </td>
         </tr>
         <tr>
-            <td>See all contacts</td>
+            <td>
+                <a href="contact/showAll">See all contacts</a>
+            </td>
         </tr>
         <tr>
             <td>See all contacts for specific group</td>

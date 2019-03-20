@@ -9,4 +9,6 @@ interface ContactServiceInterface
                                string $nickname,
                                string $email,
                                int $groupId): bool;
+
+    public function getAllContacts(): array;
 }
