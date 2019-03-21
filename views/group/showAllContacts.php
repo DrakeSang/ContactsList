@@ -12,7 +12,6 @@
                 <th>Nickname</th>
                 <th>Email</th>
                 <th>Group</th>
-                <th>Action</th>
             </tr>
             <?php foreach ($data as $contact): ?>
                 <tr>
